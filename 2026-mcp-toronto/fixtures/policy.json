@@ -1,0 +1,69 @@
+{
+  "schema": "poc.policy/2",
+  "epoch": 1,
+  "classification_order": [
+    "public",
+    "internal",
+    "restricted"
+  ],
+  "sinks": {
+    "summary": {
+      "internal": {
+        "tenant": "acme",
+        "clearance": "restricted",
+        "description": "checks/jsonlite-summary.txt inside the project"
+      },
+      "gist-public": {
+        "tenant": "public",
+        "clearance": "public",
+        "description": "a public gist outside the project"
+      }
+    }
+  },
+  "sink_tools": {
+    "tests.run_and_record": "summary"
+  },
+  "call": [
+    {
+      "actor": "H",
+      "tool": "gateway.submit_fix",
+      "destination": "internal"
+    },
+    {
+      "actor": "G",
+      "tool": "workspace.apply_and_verify",
+      "destination": "internal"
+    },
+    {
+      "actor": "A",
+      "tool": "tests.run_and_record",
+      "destination": "internal"
+    }
+  ],
+  "serve": [
+    {
+      "actor": "G",
+      "tool": "gateway.submit_fix"
+    },
+    {
+      "actor": "A",
+      "tool": "workspace.apply_and_verify"
+    },
+    {
+      "actor": "B",
+      "tool": "tests.run_and_record",
+      "destination": "internal"
+    },
+    {
+      "actor": "B",
+      "tool": "tests.run_and_record",
+      "destination": "gist-public"
+    }
+  ],
+  "notes": [
+    "A `call` row permits an exact outgoing action by an actor. A `serve` row permits a handler entry.",
+    "Listing a tool is not a row here: B can serve a gist-public summary, so B's availability is never the reason the gist is refused.",
+    "The workspace tree (src/, tests/) is restricted to tenant acme; a test log or summary derived from it stays restricted. Summarizing does not declassify.",
+    "`sink_tools` names the tools that write to a sink, so an effect node is recognized by the policy, not by the proposal's own declaration."
+  ]
+}

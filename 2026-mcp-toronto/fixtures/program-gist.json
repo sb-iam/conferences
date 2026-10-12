@@ -1,0 +1,75 @@
+{
+  "schema": "poc.program/1",
+  "program_id": "jsonlite-fix-gist",
+  "intent_file": "task.txt",
+  "nodes": [
+    {
+      "id": "fix-G",
+      "caller": "H",
+      "callee": "G",
+      "tool": "gateway.submit_fix",
+      "arguments": {
+        "patch": {
+          "message": "Reject duplicate object keys",
+          "edits": [
+            {
+              "path": "src/parser.rs",
+              "old_string": "            let key = self.parse_string()?;\n",
+              "new_string": "            let key_pos = self.pos;\n            let key = self.parse_string()?;\n            if members.iter().any(|(existing, _)| *existing == key) {\n                return Err(ParseError::DuplicateKey { key, pos: key_pos });\n            }\n"
+            }
+          ]
+        },
+        "test": "repeated_member_is_rejected",
+        "destination": "gist-public"
+      },
+      "produces": {
+        "port": "result"
+      }
+    },
+    {
+      "id": "fix-A",
+      "caller": "G",
+      "callee": "A",
+      "tool": "workspace.apply_and_verify",
+      "arguments": {
+        "patch": {
+          "message": "Reject duplicate object keys",
+          "edits": [
+            {
+              "path": "src/parser.rs",
+              "old_string": "            let key = self.parse_string()?;\n",
+              "new_string": "            let key_pos = self.pos;\n            let key = self.parse_string()?;\n            if members.iter().any(|(existing, _)| *existing == key) {\n                return Err(ParseError::DuplicateKey { key, pos: key_pos });\n            }\n"
+            }
+          ]
+        },
+        "test": "repeated_member_is_rejected",
+        "destination": "gist-public"
+      },
+      "produces": {
+        "port": "commit",
+        "label": {
+          "tenant": "acme",
+          "classification": "restricted",
+          "purpose": "code-review"
+        }
+      }
+    },
+    {
+      "id": "verify-B",
+      "caller": "A",
+      "callee": "B",
+      "tool": "tests.run_and_record",
+      "arguments": {
+        "commit": {
+          "$ref": "fix-A.commit"
+        },
+        "test": "repeated_member_is_rejected",
+        "destination": "gist-public"
+      },
+      "effect": {
+        "sink": "summary",
+        "destination": "gist-public"
+      }
+    }
+  ]
+}

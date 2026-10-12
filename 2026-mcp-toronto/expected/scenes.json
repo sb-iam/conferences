@@ -1,0 +1,230 @@
+{
+  "schema": "poc.expected-scenes/4",
+  "invariants_checked_in_every_scene": [
+    "every journal is a complete NDJSON file whose hash chain and sequence are unbroken",
+    "every released business frame has, earlier in the same journal, a durable business_consumed record with the same frame_sha256, after the role's own durable verified plan decision",
+    "the exact bytes of every consumed or refused business frame are retained under their hash and name the link's tool and the journaled destination",
+    "every handler_entry names a frame_sha256 that the same role received on that link; the sender's consumed frame is the receiver's received frame",
+    "a refused business frame has no released record for its node",
+    "the summary file exists exactly when B recorded a durable summary_written; its bytes hash to the receipt the record names, and H's knowledge names that receipt",
+    "the panel's numbers, hashes and labels equal the journals and the panel names the scene the launcher asked for",
+    "the panel has at most 12 lines of at most 80 columns and names the label OBSERVED",
+    "every handler-side refusal or failure is a durable record that names a received request; every consumed business frame carries exactly the frozen Program's arguments for its node"
+  ],
+  "scenes": {
+    "healthy": {
+      "family": "scene 1 (healthy, recorded plan)",
+      "program": "program-healthy.json",
+      "plan_verdict": "verified",
+      "plan_finding_codes": [],
+      "links_ready": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 1
+      },
+      "business_consumed": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 1
+      },
+      "business_released": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 1
+      },
+      "handler_entry": {
+        "G": 1,
+        "A": 1,
+        "B": 1
+      },
+      "commits_made": 1,
+      "tests_ran": {
+        "count": 1,
+        "test": "repeated_member_is_rejected",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "exit": 0
+      },
+      "summary_written": {
+        "internal": 1,
+        "gist-public": 0
+      },
+      "refusals": [],
+      "effect_knowledge": "known_applied",
+      "effect_witness": "receipt_verified",
+      "child_exit": {
+        "G": 0,
+        "A": 0,
+        "B": 0
+      },
+      "panel_label": "OBSERVED",
+      "handler_refusals": 0,
+      "host_exit": 0
+    },
+    "swap": {
+      "family": "rule: a call that differs from the approved plan is refused, by the exact-action rule alone",
+      "program": "program-healthy.json",
+      "fault": "the workspace changes the test name of its actual child request to some_other_test; the destination stays internal",
+      "plan_verdict": "verified",
+      "plan_finding_codes": [],
+      "links_ready": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 1
+      },
+      "business_consumed": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 0
+      },
+      "business_released": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 0
+      },
+      "handler_entry": {
+        "G": 1,
+        "A": 1,
+        "B": 0
+      },
+      "commits_made": 1,
+      "tests_ran": {
+        "count": 0
+      },
+      "summary_written": {
+        "internal": 0,
+        "gist-public": 0
+      },
+      "refusals": [
+        {
+          "role": "A",
+          "link": "A-B",
+          "node": "verify-B",
+          "codes": [
+            "ZT-R12 EXACT_ACTION_MISMATCH"
+          ]
+        }
+      ],
+      "effect_knowledge": "not_dispatched",
+      "effect_witness": "refusal_before_release",
+      "child_exit": {
+        "G": 0,
+        "A": 0,
+        "B": 0
+      },
+      "panel_label": "OBSERVED",
+      "handler_refusals": 0,
+      "host_exit": 0
+    },
+    "gist": {
+      "family": "scene 2 (injection: the gist plan)",
+      "program": "program-gist.json",
+      "plan_verdict": "denied",
+      "plan_finding_codes": [
+        "ZT-R01 CONSENT_SCOPE_MISMATCH",
+        "ZT-R07 CAPABILITY_WITHOUT_PERMISSION",
+        "ZT-S05 LABEL_CLASSIFICATION",
+        "ZT-S05 LABEL_TENANT"
+      ],
+      "links_ready": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 1
+      },
+      "business_consumed": {
+        "H-G": 0,
+        "G-A": 0,
+        "A-B": 0
+      },
+      "business_released": {
+        "H-G": 0,
+        "G-A": 0,
+        "A-B": 0
+      },
+      "handler_entry": {
+        "G": 0,
+        "A": 0,
+        "B": 0
+      },
+      "commits_made": 0,
+      "tests_ran": {
+        "count": 0
+      },
+      "summary_written": {
+        "internal": 0,
+        "gist-public": 0
+      },
+      "refusals": [],
+      "effect_knowledge": "not_dispatched",
+      "effect_witness": "plan_denied_before_any_call",
+      "child_exit": {
+        "G": 0,
+        "A": 0,
+        "B": 0
+      },
+      "panel_label": "OBSERVED",
+      "handler_refusals": 0,
+      "host_exit": 0
+    },
+    "substitute": {
+      "family": "rule: a call that differs from the approved plan is refused",
+      "program": "program-healthy.json",
+      "fault": "the workspace changes the destination of its actual child request to gist-public",
+      "plan_verdict": "verified",
+      "plan_finding_codes": [],
+      "links_ready": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 1
+      },
+      "business_consumed": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 0
+      },
+      "business_released": {
+        "H-G": 1,
+        "G-A": 1,
+        "A-B": 0
+      },
+      "handler_entry": {
+        "G": 1,
+        "A": 1,
+        "B": 0
+      },
+      "commits_made": 1,
+      "tests_ran": {
+        "count": 0
+      },
+      "summary_written": {
+        "internal": 0,
+        "gist-public": 0
+      },
+      "refusals": [
+        {
+          "role": "A",
+          "link": "A-B",
+          "node": "verify-B",
+          "codes": [
+            "ZT-R01 CONSENT_SCOPE_MISMATCH",
+            "ZT-R07 CAPABILITY_WITHOUT_PERMISSION",
+            "ZT-R12 EXACT_ACTION_MISMATCH",
+            "ZT-S05 LABEL_CLASSIFICATION",
+            "ZT-S05 LABEL_TENANT"
+          ]
+        }
+      ],
+      "effect_knowledge": "not_dispatched",
+      "effect_witness": "refusal_before_release",
+      "child_exit": {
+        "G": 0,
+        "A": 0,
+        "B": 0
+      },
+      "panel_label": "OBSERVED",
+      "handler_refusals": 0,
+      "host_exit": 0
+    }
+  }
+}

@@ -1,0 +1,81 @@
+#!/bin/sh
+# One command per scene. A thin launcher: it runs the real binary in a fresh
+# output directory, then the independent recount. It holds no demo logic.
+#
+#   demo build                 build offline with the pinned toolchain
+#   demo healthy               the recorded plan: a real commit, the real test, one summary file
+#   demo gist                  the plan follows the gist comment: denied before any business call
+#   demo swap                  the workspace swaps the test name: refused at its gate by one rule
+#   demo substitute            the workspace changes its child's destination: refused at its gate
+#   demo all                   the four scenes, one after another
+#   demo talk                  the talk: healthy, swap, gist, Enter between them; the page beside a quiet terminal
+#   demo live <scene|all>      the same scene with the browser view beside the terminal
+#   demo live-open             open the page again;  demo live-stop  stops the viewer
+#   demo check                 all scenes fresh, the leak scan and the page check; writes evidence/check.json
+#
+# ZT_OUT selects the output directory (it must not exist yet).
+# ZT_PACE_MS=N slows every role by N ms after each durable record (timing only).
+set -eu
+here=$(cd "$(dirname "$0")" && pwd)
+state="$here/.local"
+bin="${ZT_BIN:-$state/target/debug/zt}"
+recount="$here/qual/recount.py"
+expected="$here/expected/scenes.json"
+stamp() { date -u '+%Y%m%dT%H%M%S'; }
+
+scene() {
+  out="${ZT_OUT:-$state/runs/$1-$(stamp)-$$}"
+  [ ! -e "$out" ] || { echo "demo: output directory exists: $out" >&2; exit 2; }
+  [ -x "$bin" ] || { echo "demo: no binary at $bin; run: demo build" >&2; exit 2; }
+  host=0; "$bin" run --scene "$1" --out "$out" --demo "$here" || host=$?
+  [ ! -d "$out" ] || printf '%s\n' "$host" > "$out/host-exit.txt"
+  scene_status=0
+  python3 "$recount" "$out" "$expected" "$1" > "$out/recount.txt" || scene_status=$?
+  cat "$out/recount.txt"
+  python3 "$here/live/graph.py" "$out" > /dev/null 2>&1 || true
+  return $scene_status
+}
+
+case "${1:-}" in
+  build)
+    cargo_home="${CARGO_HOME:-$state/cargo-home}"
+    if [ -d "$cargo_home" ]; then
+      CARGO_HOME="$cargo_home" CARGO_TARGET_DIR="$state/target" CARGO_NET_OFFLINE=true \
+        exec cargo +1.91.0 build --offline -j "${ZT_JOBS:-4}" --manifest-path "$here/Cargo.toml"
+    else
+      echo "demo: no offline Cargo cache at $cargo_home; building with network access" >&2
+      CARGO_TARGET_DIR="$state/target" exec cargo +1.91.0 build -j "${ZT_JOBS:-4}" --manifest-path "$here/Cargo.toml"
+    fi
+    ;;
+  healthy|swap|gist|substitute)
+    scene "$1"
+    ;;
+  all)
+    # One scene's failure is the sequence's failure, whatever the later scenes do.
+    all_status=0
+    for s in healthy swap gist substitute; do
+      echo "---- demo $s"
+      ZT_OUT="${ZT_OUT:+$ZT_OUT/$s}" scene "$s" || all_status=1
+    done
+    exit $all_status
+    ;;
+  talk)
+    exec python3 "$here/live/launch.py" "$here" talk
+    ;;
+  live)
+    exec python3 "$here/live/launch.py" "$here" "${2:-healthy}"
+    ;;
+  live-open)
+    exec python3 "$here/live/server.py" open
+    ;;
+  live-stop)
+    exec python3 "$here/live/server.py" stop
+    ;;
+  check)
+    exec python3 "$here/qual/check.py" "$here"
+    ;;
+  *)
+    sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'
+    exit 2
+    ;;
+esac

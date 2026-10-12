@@ -1,0 +1,1 @@
+Fix the failing test repeated_member_is_rejected in crate jsonlite, commit the fix, run exactly that test on the commit, and record the result in checks/jsonlite-summary.txt inside the project. Keep the source and the test output inside the project.
