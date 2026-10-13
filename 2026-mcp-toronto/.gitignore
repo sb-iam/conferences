@@ -1,0 +1,5 @@
+# Build output, the Cargo cache and run directories stay out of git.
+.local
+target/
+__pycache__/
+*.pyc

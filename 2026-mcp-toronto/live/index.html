@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jsonlite fix, live</title>
+<link rel="stylesheet" href="/live.css">
+</head>
+<body>
+<header id="top">
+  <div id="brand"><span class="mono">ZT PoC</span><span class="mono dim">one coding task · gateway, workspace, tests · the whole plan checked</span></div>
+  <div id="title"><h1 id="scene">waiting for a run</h1><span id="badge" class="badge waiting">WAITING</span><nav id="scenes" class="mono" aria-label="scenes"></nav></div>
+  <p id="intent" class="intent">Fix the failing test repeated_member_is_rejected in crate jsonlite, commit the fix, run exactly that test on the commit, and record the result in checks/jsonlite-summary.txt inside the project. Keep the source and the test output inside the project.</p>
+</header>
+<section id="plan" class="card plan pending">
+  <div class="label mono">Whole-plan check · before any task process is entered</div>
+  <div id="plan-verdict" class="verdict">pending</div>
+  <div id="plan-codes" class="chips"></div>
+</section>
+<div id="recount" class="recount mono" aria-live="polite"></div>
+<section id="graph" class="card graphcard">
+  <div class="label mono">Composition graph · drawn from the same records<span id="graph-effect"></span></div>
+  <svg id="dag" viewBox="0 0 1200 192" role="img" aria-label="H to G to A to B, then the summary file">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="context-stroke"/></marker>
+    </defs>
+    <g id="e-H-G" class="edge idle"><line x1="140" y1="72" x2="300" y2="72" marker-end="url(#arrow)"/><text class="elabel" x="220" y="60" text-anchor="middle">submit_fix</text><text class="ehash" x="220" y="94" text-anchor="middle"></text></g>
+    <g id="e-G-A" class="edge idle"><line x1="420" y1="72" x2="580" y2="72" marker-end="url(#arrow)"/><text class="elabel" x="500" y="60" text-anchor="middle">apply_and_verify</text><text class="ehash" x="500" y="94" text-anchor="middle"></text></g>
+    <g id="e-A-B" class="edge idle"><line x1="700" y1="72" x2="860" y2="72" marker-end="url(#arrow)"/><text class="elabel" x="780" y="60" text-anchor="middle">run_and_record</text><text class="ehash" x="780" y="94" text-anchor="middle"></text></g>
+    <g id="e-B-internal" class="edge idle"><line x1="980" y1="58" x2="1040" y2="36" marker-end="url(#arrow)"/><text class="elabel" x="1010" y="16" text-anchor="middle">summary file</text><text class="ehash" x="1010" y="28" text-anchor="middle"></text></g>
+    <g id="e-B-gist" class="edge idle"><line x1="980" y1="86" x2="1040" y2="140" marker-end="url(#arrow)"/><text class="elabel" x="1010" y="172" text-anchor="middle">public gist</text><text class="ehash" x="1010" y="184" text-anchor="middle"></text></g>
+    <g id="n-H" class="node idle"><rect x="20" y="42" width="120" height="60" rx="4"/><text class="name" x="80" y="68" text-anchor="middle">H</text><text class="sub" x="80" y="88" text-anchor="middle">driver</text></g>
+    <g id="n-G" class="node idle"><rect x="300" y="42" width="120" height="60" rx="4"/><text class="name" x="360" y="68" text-anchor="middle">G</text><text class="sub" x="360" y="88" text-anchor="middle">gateway</text></g>
+    <g id="n-A" class="node idle"><rect x="580" y="42" width="120" height="60" rx="4"/><text class="name" x="640" y="68" text-anchor="middle">A</text><text class="sub" x="640" y="88" text-anchor="middle">workspace</text></g>
+    <g id="n-B" class="node idle"><rect x="860" y="42" width="120" height="60" rx="4"/><text class="name" x="920" y="68" text-anchor="middle">B</text><text class="sub" x="920" y="88" text-anchor="middle">tests</text></g>
+    <g id="sink-internal" class="sink idle"><path d="M1040 12 h120 l12 12 v34 h-132 z"/><text class="name" x="1106" y="34" text-anchor="middle">summary file</text><text class="sub" x="1106" y="50" text-anchor="middle"></text></g>
+    <g id="sink-gist" class="sink idle"><path d="M1040 118 h120 l12 12 v34 h-132 z"/><text class="name" x="1106" y="140" text-anchor="middle">gist-public</text><text class="sub" x="1106" y="156" text-anchor="middle"></text></g>
+  </svg>
+  <div class="legend mono dim">dotted: not sent · grey: link up · yellow: decided on the exact bytes · blue: released, written · red dashed: refused · nodes: grey up, blue plan verified, black handler entered, red refused</div>
+  <details class="dotbox"><summary class="mono dim">DOT · the same graph for Graphviz (the launcher writes graph.dot, and graph.svg when dot is installed, into the run directory)</summary><pre id="dot" class="mono"></pre></details>
+</section>
+<section id="stage">
+  <div class="lane" data-role="H"><div class="lanehead"><svg viewBox="0 0 24 24" class="mark"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="4"/></svg><div><b>H</b> driver</div><span class="gated mono" id="gated-H">0 frames gated</span></div><div class="events" id="lane-H"></div></div>
+  <div class="lane" data-role="G"><div class="lanehead"><svg viewBox="0 0 24 24" class="mark"><rect x="3" y="3" width="18" height="18" fill="#D7322B"/></svg><div><b>G</b> gateway</div><span class="gated mono" id="gated-G">0 frames gated</span></div><div class="events" id="lane-G"></div></div>
+  <div class="lane" data-role="A"><div class="lanehead"><svg viewBox="0 0 24 24" class="mark"><path d="M12 3 L22 21 L2 21 Z" fill="#F2B81F"/></svg><div><b>A</b> workspace</div><span class="gated mono" id="gated-A">0 frames gated</span></div><div class="events" id="lane-A"></div></div>
+  <div class="lane" data-role="B"><div class="lanehead"><svg viewBox="0 0 24 24" class="mark"><circle cx="12" cy="12" r="10" fill="#1F4FA3"/></svg><div><b>B</b> tests</div><span class="gated mono" id="gated-B">0 frames gated</span></div><div class="events" id="lane-B"></div></div>
+</section>
+<section id="counts" class="mono">
+  <span>counted from the stream:</span>
+  <span>business calls <b id="n-calls">0</b></span>
+  <span>frames gated <b id="n-gated">0</b></span>
+  <span>refusals <b id="n-refusals">0</b></span>
+  <span>summary files <b id="n-rows">0</b></span>
+</section>
+<section id="outcome" class="card outcome hidden">
+  <div class="label mono">Outcome · what the terminal printed</div>
+  <pre id="panel" class="mono"></pre>
+</section>
+<footer class="mono dim">The page reads the run directory through a loopback viewer and never writes into it. Numbers above are counted in the page from the stream; the verdict is the recount's line; the scene strip is the viewer's history of finished runs.</footer>
+<script src="/live.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+ "schema": "poc.check/1",
+ "at_utc": "2026-10-12T22:56:06Z",
+ "binary_sha256": "b9f0d0d8569f76f68475b86c1eb9c422ecd91b78543a602bf2d10f0049fd30c0",
+ "scenes": {
+  "healthy": {
+   "exit": 0,
+   "checks": 213,
+   "run": "check/20261012T225606Z/healthy",
+   "runtime_bin": "b9f0d0d8569f"
+  },
+  "swap": {
+   "exit": 0,
+   "checks": 179,
+   "run": "check/20261012T225606Z/swap",
+   "runtime_bin": "b9f0d0d8569f"
+  },
+  "gist": {
+   "exit": 0,
+   "checks": 125,
+   "run": "check/20261012T225606Z/gist",
+   "runtime_bin": "b9f0d0d8569f"
+  },
+  "substitute": {
+   "exit": 0,
+   "checks": 180,
+   "run": "check/20261012T225606Z/substitute",
+   "runtime_bin": "b9f0d0d8569f"
+  }
+ },
+ "leak_scan": {
+  "exit": 0,
+  "findings": [],
+  "unreviewed": []
+ },
+ "platform": {
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.9.6",
+  "rustc": "rustc 1.91.0 (f8297e351 2025-10-28)"
+ },
+ "page_check": {
+  "exit": 0,
+  "last_line": "Page check: PASS, 67 checks; screenshots in pagecheck/20261012T225610Z/shots under the demo's local state directory",
+  "output": "check/20261012T225606Z/pagecheck.txt"
+ },
+ "passed": true
+}

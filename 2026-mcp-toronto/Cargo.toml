@@ -1,0 +1,29 @@
+[package]
+name = "zt-poc"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.91"
+publish = false
+license = "Apache-2.0"
+description = "One coding task through a gateway, a workspace and a test runner: the whole plan is checked before any business handler runs, and every hop's exact bytes are checked before release."
+
+[[bin]]
+name = "zt"
+path = "src/main.rs"
+
+[dependencies]
+# The official Rust MCP SDK at an exact Git revision; the demo adds a gated transport on top of it.
+rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk", rev = "ae2f9c9b45a2c98d24ee345406e79f507c9f9282", default-features = false, features = ["client", "server", "transport-io"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+sha2 = "0.10"
+hex = "0.4"
+
+# Dependencies are optimized once; the demo itself rebuilds fast.
+[profile.dev]
+opt-level = 1
+debug = false
+
+[profile.dev.package."*"]
+opt-level = 3

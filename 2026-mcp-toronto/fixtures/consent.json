@@ -1,0 +1,11 @@
+{
+  "schema": "poc.consent/1",
+  "intent_file": "task.txt",
+  "allowed_effects": [
+    {
+      "sink": "summary",
+      "destination": "internal"
+    }
+  ],
+  "note": "The admitted intent: one summary file inside the project. A comment in the code cannot amend it (ZT-R01)."
+}

@@ -1,0 +1,127 @@
+:root {
+  --paper: #F6F3EC; --card: #FFFDF8; --ink: #17161A; --dim: #5F5A4E; --line: #D9D3C4;
+  --red: #D7322B; --yellow: #F2B81F; --blue: #1F4FA3; --red-soft: #FBE3E0; --blue-soft: #E3E9F5; --yellow-soft: #FBF0CC;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: Futura, Jost, "Avenir Next", "Helvetica Neue", system-ui, sans-serif; font-size: 16px; line-height: 1.35; }
+body { padding: 20px 16px 40px; max-width: 1280px; margin: 0 auto; }
+.mono { font-family: Menlo, "JetBrains Mono", "SF Mono", Consolas, monospace; font-size: 13px; }
+.dim { color: var(--dim); }
+.hidden { display: none !important; }
+
+header#top { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+#brand { display: flex; justify-content: space-between; gap: 12px; letter-spacing: 1.5px; text-transform: uppercase; }
+#title { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+#title h1 { margin: 0; font-size: 40px; font-weight: 500; letter-spacing: -0.5px; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-family: Menlo, monospace; font-size: 12px; letter-spacing: 1px; border: 2px solid var(--ink); }
+.badge.waiting { color: var(--dim); border-color: var(--line); }
+.badge.live { background: var(--yellow); border-color: var(--yellow); }
+.badge.done { background: var(--ink); color: var(--paper); }
+.badge.replay { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+.intent { margin: 0; font-size: 18px; color: var(--dim); max-width: 60em; }
+
+.card { background: var(--card); border: 1px solid var(--ink); padding: 14px 18px; }
+.label { letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+.plan { margin-bottom: 8px; border-left: 10px solid var(--line); }
+.plan.pending .verdict { color: var(--dim); }
+.plan.verified { border-left-color: var(--blue); }
+.plan.verified .verdict { color: var(--blue); }
+.plan.denied { border-left-color: var(--red); background: var(--red-soft); }
+.plan.denied .verdict { color: var(--red); }
+.verdict { font-size: 28px; font-weight: 500; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip { font-family: Menlo, monospace; font-size: 12px; padding: 2px 8px; border: 1px solid var(--ink); border-radius: 4px; background: var(--card); }
+.chip.red { border-color: var(--red); color: var(--red); }
+
+#stage { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.lane { background: var(--card); border: 1px solid var(--ink); min-height: 200px; }
+.lanehead { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 2px solid var(--ink); }
+.lanehead .mark { width: 28px; height: 28px; flex: none; }
+.lanehead b { font-size: 20px; margin-right: 4px; }
+.lanehead .gated { margin-left: auto; color: var(--dim); font-size: 11px; text-align: right; }
+.events { display: flex; flex-direction: column; gap: 6px; padding: 10px; max-height: 48vh; overflow-y: auto; }
+.ev { border-left: 4px solid var(--line); padding: 6px 10px; background: var(--paper); font-size: 14px; animation: rise 180ms ease-out; }
+.ev .k { font-family: Menlo, monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); display: flex; justify-content: space-between; gap: 8px; }
+.ev .t { margin-top: 2px; }
+.ev .sha { font-family: Menlo, monospace; font-size: 12px; color: var(--dim); }
+.ev.durable { border-left-color: var(--ink); }
+.ev.out { border-left-color: var(--blue); }
+.ev.in { border-left-color: var(--yellow); }
+.ev.commit { border-left-color: var(--blue); background: var(--blue-soft); }
+.ev.refused { border-left-color: var(--red); background: var(--red-soft); color: var(--red); font-weight: 500; }
+.ev.refused .k { color: var(--red); }
+.ev.effect { border-left-color: var(--ink); background: var(--yellow-soft); }
+.ev.quiet { color: var(--dim); font-size: 13px; }
+.ev.warn { border-left-color: var(--red); color: var(--red); }
+.lock { display: inline-block; width: 10px; height: 10px; margin-right: 4px; vertical-align: -1px; border: 2px solid currentColor; border-radius: 2px; }
+@keyframes rise { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+#counts { display: flex; flex-wrap: wrap; gap: 18px; margin: 14px 0; color: var(--dim); }
+#counts b { color: var(--ink); font-weight: 600; margin-left: 4px; }
+
+.outcome { border-left: 10px solid var(--ink); }
+#panel { margin: 6px 0 10px; white-space: pre; overflow-x: auto; font-size: 13px; line-height: 1.45; }
+.recount { font-weight: 600; font-size: 14px; min-height: 22px; margin: -8px 0 12px; padding: 6px 18px; border-left: 10px solid var(--line); background: var(--card); border-top: 1px solid var(--ink); border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.recount:empty::before { content: 'verdict: the independent recount runs when the scene ends'; color: var(--dim); font-weight: 400; }
+.recount.pass { color: var(--blue); border-left-color: var(--blue); }
+.recount.fail { color: var(--red); border-left-color: var(--red); }
+footer { margin-top: 24px; max-width: 70em; }
+
+@media (max-width: 900px) {
+  #stage { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #title h1 { font-size: 30px; }
+}
+@media (max-width: 520px) {
+  #stage { grid-template-columns: 1fr; }
+  .lane { min-height: 0; }
+}
+
+/* the scene strip */
+#scenes { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; align-items: center; }
+#scenes .scene { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); text-decoration: none; font-size: 12px; background: var(--card); }
+#scenes .scene .mark { font-size: 13px; }
+#scenes .scene b { color: var(--ink); font-weight: 600; }
+#scenes .scene.pass { border-color: var(--blue); }
+#scenes .scene.pass .mark { color: var(--blue); }
+#scenes .scene.fail { border-color: var(--red); }
+#scenes .scene.fail .mark, #scenes .scene.fail .dim { color: var(--red); }
+#scenes .scene.bad { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+#scenes .scene.running { border-color: var(--yellow); background: var(--yellow-soft); }
+#scenes .scene.running .mark { color: var(--yellow); }
+
+/* the composition graph */
+.graphcard { margin: 0 0 12px; border-left: 10px solid var(--line); padding-bottom: 8px; }
+#dag { width: 100%; height: auto; display: block; font-family: Menlo, "JetBrains Mono", monospace; }
+#dag .node rect { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+#dag .node text.name { font-size: 20px; font-weight: 600; fill: var(--dim); }
+#dag .node text.sub { font-size: 11px; fill: var(--dim); }
+#dag .node.up rect { stroke: var(--dim); }
+#dag .node.up text.name { fill: var(--ink); }
+#dag .node.verified rect { stroke: var(--blue); stroke-width: 2; }
+#dag .node.verified text.name { fill: var(--blue); }
+#dag .node.denied rect { stroke: var(--red); stroke-width: 2; fill: var(--red-soft); }
+#dag .node.denied text { fill: var(--red); }
+#dag .node.entered rect { stroke: var(--ink); stroke-width: 2.5; }
+#dag .node.entered text.name { fill: var(--ink); }
+#dag .node.done rect { stroke: var(--blue); stroke-width: 2.5; fill: var(--blue-soft); }
+#dag .node.done text { fill: var(--blue); }
+#dag .edge line { stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 2 4; }
+#dag .edge text { font-size: 10px; fill: var(--dim); }
+#dag .edge text.ehash { font-size: 9.5px; }
+#dag .edge.up line { stroke: var(--dim); stroke-dasharray: none; }
+#dag .edge.decided line { stroke: var(--yellow); stroke-width: 3; stroke-dasharray: none; }
+#dag .edge.released line, #dag .edge.written line { stroke: var(--blue); stroke-width: 3; stroke-dasharray: none; }
+#dag .edge.released text, #dag .edge.written text { fill: var(--blue); }
+#dag .edge.refused line, #dag .edge.named line { stroke: var(--red); stroke-width: 3; stroke-dasharray: 6 4; }
+#dag .edge.refused text, #dag .edge.named text { fill: var(--red); font-weight: 600; }
+#dag .sink path { fill: var(--card); stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 3 3; }
+#dag .sink text.name { font-size: 11px; fill: var(--dim); }
+#dag .sink text.sub { font-size: 10px; fill: var(--dim); }
+#dag .sink.written path { stroke: var(--blue); stroke-width: 2.5; stroke-dasharray: none; fill: var(--blue-soft); }
+#dag .sink.written text { fill: var(--blue); }
+#dag .sink.named path { stroke: var(--red); stroke-width: 2.5; fill: var(--red-soft); }
+#dag .sink.named text { fill: var(--red); }
+.legend { font-size: 11px; margin-top: 4px; }
+.dotbox { margin-top: 6px; }
+.dotbox summary { cursor: pointer; font-size: 11px; }
+.dotbox pre { white-space: pre; overflow-x: auto; font-size: 11px; margin: 6px 0 0; }
